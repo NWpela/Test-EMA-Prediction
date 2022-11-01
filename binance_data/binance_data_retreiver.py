@@ -9,21 +9,9 @@ __API_SECRET = r"jHJfFKhG3B7hJ0TAPozjIVkDX9vNHnGfQjAe5HEUIMoZKI73nceE4bCDVgJHK59
 client = Client(__API_KEY, __API_SECRET)
 
 # Global parameters
-COIN_CODES = ["BTC",
-              "ETH",
-              "XRP",
-              "LINK",
-              "XLM",
-              "EOS",
-              "BNB",
-              "TRX",
-              "DOGE",
-              "MATIC",
-              "AVAX",
-              "SOL",
-              "UNI"]
-interval = Client.KLINE_INTERVAL_15MINUTE
-start_date_str = "1 May, 2021"
+COIN_CODES = ["BTC"]
+interval = Client.KLINE_INTERVAL_1MINUTE
+start_date_str = "1 October, 2022"
 column_names = ["Timestamp_open",
                 "Open",
                 "High",
@@ -39,7 +27,7 @@ column_names = ["Timestamp_open",
 version = "v1"
 
 for COIN_CODE in COIN_CODES:
-    PAIR = COIN_CODE + "EUR"
+    PAIR = COIN_CODE + "USDT"
     # Start retrieval using API
     raw_data = client.get_historical_klines(PAIR, interval, start_date_str)
 

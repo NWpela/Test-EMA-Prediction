@@ -66,7 +66,7 @@ def compute_baseline(df: pd.DataFrame, win1: int, win2: int, baseline_name: str)
     else:
         df[baseline_name] = df.Close - ema2.ema_indicator()
 
-def compute_EMA(df: pd.DataFrame, win: int):
+def compute_EMA(df: pd.DataFrame, win: int, ema_name: str = "RESIDUAL"):
     # df is supposed to contain a "Close" column
     ema = EMAIndicator(close=df.Close, window=win, fillna=True)
-    df["RESIDUAL"] = ema.ema_indicator()
+    df[ema_name] = ema.ema_indicator()
