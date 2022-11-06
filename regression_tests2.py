@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 import indicators as ind
-from scipy import signal
 from sklearn.linear_model import LinearRegression
 
 matplotlib.use('Qt5Agg')
@@ -26,7 +25,6 @@ WITH_RESIDUAL = True
 # --- Data Loading, Indicators ,Normalisation and baselines---
 
 raw_df = pd.read_csv(f"binance_data/{ASSET}USDT_1m_v1.csv", sep=';')[:(N_TRAIN+N_TEST)]
-raw_df_down = pd.read_csv(f"binance_data/{ASSET}DOWNUSDT_1m_v1.csv", sep=';')[:(N_TRAIN+N_TEST)]
 
 for ewa_windows in EWA_WINDOWS_LIST:
     baseline_name = f"BASELINE_{ewa_windows[0]}_{ewa_windows[1]}"
@@ -64,32 +62,38 @@ plt.plot(x, y_pred, color='k')
 # --- Backtesting ---
 
 cash = 100
-delta = 0.1
-
 btc = 0
+delta = 0.1
 
 cash_list = []
 MtM_list = []
+btc_list = []
 for k in range(1, N_TEST-1):
     data = raw_df.iloc[N_TRAIN + k]
-    data_down = raw_df_down.iloc[N_TRAIN + k]
 
     x = data[USED_FIELD]
     predicted_close_var = regr.predict(np.array([[x]]))
     close = data.Close
-    close_down = data_down.Close
 
     # save cash value
     cash_list.append(cash)
     MtM_list.append(cash + close * btc)
+    btc_list.append(btc)
 
-    # buy next ones
-    if predicted_close_var < 0:  # sign is strange here
+    # buy or sell
+    if predicted_close_var > 0:  # sign is strange here
         btc += delta * cash / close
         cash -= delta * cash
     else:
         cash += delta * btc * close
         btc -= delta * btc
 
+# spot
+plt.figure()
+plt.plot(raw_df.Close[N_TRAIN:N_TRAIN+N_TEST-1])
+
+# MtM
 plt.figure()
 plt.plot(np.array(MtM_list))
+
+

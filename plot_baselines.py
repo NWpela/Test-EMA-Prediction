@@ -15,7 +15,7 @@ matplotlib.use('Qt5Agg')
 
 ASSET = "BTC"
 FIELD = "Close"
-N_TOT = 3000
+N_TOT = 20000
 
 EWA_WINDOWS_LIST = [(1, 10), (10, 70), (70, 200)]
 #EWA_WINDOWS_LIST = [(1, 10)]
