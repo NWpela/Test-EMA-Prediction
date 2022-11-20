@@ -16,8 +16,8 @@ matplotlib.use('Qt5Agg')
 
 ASSET = "BTC"
 FIELD = "Close"
-N_TRAIN = 30000
-N_TEST = 15000
+N_TRAIN = 37000
+N_TEST = 8000
 
 EWA_WINDOWS_LIST = [(1, 10)]
 WITH_RESIDUAL = True
